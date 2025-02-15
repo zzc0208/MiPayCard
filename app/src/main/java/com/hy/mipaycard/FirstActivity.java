@@ -99,17 +99,26 @@ public class FirstActivity extends AppCompatActivity {
     }
 
     public static String getSign(Context context) {
-        String sign = "";
-        PackageManager pm = context.getPackageManager();
-        List<PackageInfo> apps = pm.getInstalledPackages(PackageManager.GET_SIGNATURES);
-        for (PackageInfo packageinfo : apps) {
-            String packageName = packageinfo.packageName;
-
-            if (packageName.equals(context.getPackageName())) {
-                sign = MD5Encode(packageinfo.signatures[0].toByteArray());
+        try {
+            PackageManager pm = context.getPackageManager();
+            PackageInfo packageInfo;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                packageInfo = pm.getPackageInfo(context.getPackageName(), 
+                    PackageManager.GET_SIGNING_CERTIFICATES);
+                if (packageInfo.signingInfo != null) {
+                    return MD5Encode(packageInfo.signingInfo.getApkContentsSigners()[0].toByteArray());
+                }
+            } else {
+                packageInfo = pm.getPackageInfo(context.getPackageName(), 
+                    PackageManager.GET_SIGNATURES);
+                if (packageInfo.signatures != null && packageInfo.signatures.length > 0) {
+                    return MD5Encode(packageInfo.signatures[0].toByteArray());
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return sign;
+        return "";
     }
 
     private static String MD5Encode(byte[] toEncode) {
