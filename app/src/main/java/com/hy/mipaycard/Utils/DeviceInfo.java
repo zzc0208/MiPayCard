@@ -16,14 +16,11 @@ public class DeviceInfo {
     }
 
     private static PackageInfo getPackageInfo(Context context, String packageName){
-        PackageInfo packageInfo = null;
-        PackageManager packageManager = context.getPackageManager();
         try {
-            packageInfo = packageManager.getPackageInfo(packageName,PackageManager.GET_CONFIGURATIONS);
+            return context.getPackageManager().getPackageInfo(packageName, 0);
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+            return null; // 未安装时返回null
         }
-        return packageInfo;
     }
 
     private static String getMiWalletInfo(Context context){
