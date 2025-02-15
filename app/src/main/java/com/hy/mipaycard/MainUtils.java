@@ -289,17 +289,20 @@ public class MainUtils {
     }
 
     public static int getMiWalletVersion(Context context){
-            String verName = "0";
-            try {
-                verName = context.getPackageManager().
-                        getPackageInfo("com.mipay.wallet", 0).versionName;
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
+        try {
+            PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo("com.mipay.wallet", 0);
+            if(packageInfo == null) return 0;
+            
+            String verName = packageInfo.versionName;
             if(verName.contains(".")){
-                verName = verName.substring(0,verName.indexOf("."));
+                verName = verName.substring(0, verName.indexOf("."));
             }
             return Integer.parseInt(verName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0; // 返回默认值
+        }
     }
 
     //https://developer.huawei.com/consumer/cn/doc/50127#h1-2-
