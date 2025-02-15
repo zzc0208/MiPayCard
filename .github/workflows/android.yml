@@ -12,16 +12,16 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4  # 升级checkout到v4
+      uses: actions/checkout@v4
 
-    - name: Set up JDK 18
-      uses: actions/setup-java@v3  # 升级java setup到v3
+    - name: Set up JDK 22
+      uses: actions/setup-java@v3
       with:
-        java-version: '18'
+        java-version: '22'
         distribution: 'temurin'
 
     - name: Setup Android SDK
-      uses: android-actions/setup-android@v3  # 升级android setup到v3
+      uses: android-actions/setup-android@v3
 
     - name: Build APK
       run: |
@@ -29,7 +29,7 @@ jobs:
         ./gradlew assembleRelease
 
     - name: Upload APK
-      uses: actions/upload-artifact@v4  # 关键修改：升级到v4版本
+      uses: actions/upload-artifact@v4
       with:
         name: app-release
         path: app/build/outputs/apk/release/*.apk

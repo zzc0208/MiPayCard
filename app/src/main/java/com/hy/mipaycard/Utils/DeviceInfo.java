@@ -28,6 +28,9 @@ public class DeviceInfo {
 
     private static String getMiWalletInfo(Context context){
         PackageInfo packageInfo = getPackageInfo(context,"com.mipay.wallet");
+        if (packageInfo == null) {
+            return "小米钱包版本: 未安装\n";
+        }
         String verName = packageInfo.versionName;
         int verCode = packageInfo.versionCode;
         return "小米钱包版本: "+verName+"("+verCode+")\n";
@@ -35,6 +38,9 @@ public class DeviceInfo {
 
     private static String getMiPayInfo(Context context){
         PackageInfo packageInfo = getPackageInfo(context,"com.miui.tsmclient");
+        if (packageInfo == null) {
+            return "小米智能卡版本: 未安装\n";
+        }
         String verName = packageInfo.versionName;
         int verCode = packageInfo.versionCode;
         return "小米智能卡版本: "+verName+"("+verCode+")\n";
